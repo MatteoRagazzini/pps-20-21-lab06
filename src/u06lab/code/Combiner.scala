@@ -9,6 +9,7 @@ trait Functions {
   def sum(a: List[Double]): Double
   def concat(a: Seq[String]): String
   def max(a: List[Int]): Int // gives Int.MinValue if a is empty
+  def combiner[A](a: Seq[A], combiner: Combiner[A]): A
 }
 
 object FunctionsImpl extends Functions {
@@ -26,7 +27,13 @@ object FunctionsImpl extends Functions {
     case Nil => Int.MinValue
     case _ => a.max
   }
+
+  def combiner[A](a: Seq[A], combiner: Combiner[A]): A = a match {
+    case Nil => combiner.unit
+    case _ => a.foldRight(combiner.unit)(combiner.combine)
+  }
 }
+
 
 
 /*
@@ -47,12 +54,14 @@ trait Combiner[A] {
   def combine(a: A, b: A): A
 }
 
-object TryFunctions extends App {
-  val f: Functions = FunctionsImpl
-  println(f.sum(List(10.0,20.0,30.1))) // 60.1
-  println(f.sum(List()))                // 0.0
-//  println(f.concat(Seq("a","b","c")))   // abc
-//  println(f.concat(Seq()))              // ""
-//  println(f.max(List(-10,3,-5,0)))      // 3
-//  println(f.max(List()))                // -2147483648
+case class sumCombiner(var unit: Double = 0.0) extends  Combiner[Double] {
+  override def combine(a: Double, b: Double): Double = a + b
+}
+
+case class concatCombiner(var unit: String = "") extends Combiner[String] {
+  override def combine(a: String, b: String): String = a + b
+}
+
+case class maxCombiner(var unit: Int = Int.MinValue) extends Combiner[Int] {
+  override def combine(a: Int, b: Int): Int = Math.max(a,b)
 }
