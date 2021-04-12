@@ -46,6 +46,13 @@ trait NotTwoConsecutive[T] extends Parser[T]{
 
 }
 
+object implicitConversions{
+  implicit class myRichString(s: String){
+    def charParser() : Parser[Char] = new BasicParser(s.toSet)
+  }
+}
+
+
 class NonEmptyParser(chars: Set[Char]) extends BasicParser(chars) with NonEmpty[Char]
 
 class NotTwoConsecutiveParser(chars: Set[Char]) extends BasicParser(chars) with NotTwoConsecutive[Char]
@@ -75,7 +82,7 @@ object TryParsers2 extends App {
   println(parserNTCNE.parseAll("XYYZ".toList)) // false
   println(parserNTCNE.parseAll("".toList)) // false
 
-  def sparser : Parser[Char] = ??? // "abc".charParser()
+  def sparser : Parser[Char] = new BasicParser(Set('a','b','c')) // "abc".charParser()
   println(sparser.parseAll("aabc".toList)) // true
   println(sparser.parseAll("aabcdc".toList)) // false
   println(sparser.parseAll("".toList)) // true
