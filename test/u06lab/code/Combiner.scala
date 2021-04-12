@@ -11,7 +11,7 @@ class TryFunctions {
     println(0.0, f.sum(List())) // 0.0
     println("abc", f.concat(Seq("a", "b", "c")))
     println("", f.concat(Seq()))
-//    println(3, f.max(List(-10, 3, -5, 0)))
-//    println(Integer.MIN_VALUE, f.max(List()))
+    println(3, f.max(List(-10, 3, -5, 0)))
+    println(Integer.MIN_VALUE, f.max(List()))
   }
 }

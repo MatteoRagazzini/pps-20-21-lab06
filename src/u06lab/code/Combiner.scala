@@ -17,12 +17,15 @@ object FunctionsImpl extends Functions {
 
 
   override def concat(a: Seq[String]): String = {
-    var st = ""
+    val st = ""
     a.toList.foreach(s => st+s)
     st
   }
 
-  override def max(a: List[Int]): Int = ???
+  override def max(a: List[Int]): Int = a match{
+    case Nil => Int.MinValue
+    case _ => a.max
+  }
 }
 
 
