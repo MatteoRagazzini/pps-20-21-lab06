@@ -13,9 +13,14 @@ trait Functions {
 
 object FunctionsImpl extends Functions {
 
-  override def sum(a: List[Double]): Double = ???
+  override def sum(a: List[Double]): Double =  a.foldRight(0.0)(_ + _)
 
-  override def concat(a: Seq[String]): String = ???
+
+  override def concat(a: Seq[String]): String = {
+    var st = ""
+    a.toList.foreach(s => st+s)
+    st
+  }
 
   override def max(a: List[Int]): Int = ???
 }
@@ -43,8 +48,8 @@ object TryFunctions extends App {
   val f: Functions = FunctionsImpl
   println(f.sum(List(10.0,20.0,30.1))) // 60.1
   println(f.sum(List()))                // 0.0
-  println(f.concat(Seq("a","b","c")))   // abc
-  println(f.concat(Seq()))              // ""
-  println(f.max(List(-10,3,-5,0)))      // 3
-  println(f.max(List()))                // -2147483648
+//  println(f.concat(Seq("a","b","c")))   // abc
+//  println(f.concat(Seq()))              // ""
+//  println(f.max(List(-10,3,-5,0)))      // 3
+//  println(f.max(List()))                // -2147483648
 }
