@@ -15,16 +15,23 @@ object TicTacToe  extends  App {
 
   def find(board: Board, x: Int, y: Int): Option[Player] = board.filter(m => m.x == x && m.y == y).map(m=> m.player).lastOption
 
+//  def placeAnyMark(board: Board, player: Player): Seq[Board] = {
+//    var solutions: Seq[Board] = Seq()
+//    for(x <- 0 to 2; y <- 0 to 2) {
+//        // if in a certain cell there isn't a mark
+//        if (find(board, x, y).isEmpty) {
+//          // Append to solutions a new board with a new mark in the free position
+//          solutions = solutions :+ (board :+ Mark(x,y,player))
+//        }
+//    }
+//    solutions
+//  }
+
   def placeAnyMark(board: Board, player: Player): Seq[Board] = {
-    var solutions: Seq[Board] = Seq()
-    for(x <- 0 to 2; y <- 0 to 2) {
-        // if in a certain cell there isn't a mark
-        if (find(board, x, y).isEmpty) {
-          // Append to solutions a new board with a new mark in the free position
-          solutions = solutions :+ (board :+ Mark(x,y,player))
-        }
-    }
-    solutions
+    for(x <- 0 to 2;
+        y <- 0 to 2
+        if find(board,x,y).isEmpty)
+    yield board:+Mark(x,y,player)
   }
 
   def computeAnyGame(player: Player, moves: Int): Stream[Game] = ???
