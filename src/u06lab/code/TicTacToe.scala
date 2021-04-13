@@ -1,5 +1,6 @@
 package u06lab.code
 
+
 object TicTacToe  extends  App {
   sealed trait Player{
     def other: Player = this match {case X => O; case _ => X}
@@ -14,7 +15,17 @@ object TicTacToe  extends  App {
 
   def find(board: Board, x: Int, y: Int): Option[Player] = board.filter(m => m.x == x && m.y == y).map(m=> m.player).lastOption
 
-  def placeAnyMark(board: Board, player: Player): Seq[Board] = ???
+  def placeAnyMark(board: Board, player: Player): Seq[Board] = {
+    var solutions: Seq[Board] = Seq()
+    for(x <- 0 to 2; y <- 0 to 2) {
+        // if in a certain cell there isn't a mark
+        if (find(board, x, y).isEmpty) {
+          // Append to solutions a new board with a new mark in the free position
+          solutions = solutions :+ (board :+ Mark(x,y,player))
+        }
+    }
+    solutions
+  }
 
   def computeAnyGame(player: Player, moves: Int): Stream[Game] = ???
 
@@ -30,6 +41,8 @@ object TicTacToe  extends  App {
   println(find(List(Mark(0,0,X),Mark(0,1,O),Mark(0,2,X)),1,1)) // None
 
   // Exercise 2: implement placeAnyMark such that..
+  var boards: Seq[Board] = placeAnyMark(List(), X)
+  println(boards.size)
   printBoards(placeAnyMark(List(),X))
   //... ... ..X ... ... .X. ... ... X..
   //... ..X ... ... .X. ... ... X.. ...
@@ -40,7 +53,7 @@ object TicTacToe  extends  App {
   //..X ... ... .X. ... ... X.. ...
 
   // Exercise 3 (ADVANCED!): implement computeAnyGame such that..
-  computeAnyGame(O, 4) foreach {g => printBoards(g); println()}
+ // computeAnyGame(O, 4) foreach {g => printBoards(g); println()}
   //... X.. X.. X.. XO.
   //... ... O.. O.. O..
   //... ... ... X.. X..
