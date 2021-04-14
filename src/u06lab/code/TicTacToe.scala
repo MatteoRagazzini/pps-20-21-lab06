@@ -13,7 +13,7 @@ object TicTacToe  extends  App {
   type Board = List[Mark]
   type Game = List[Board]
 
-  def find(board: Board, x: Int, y: Int): Option[Player] = board.filter(m => m.x == x && m.y == y).map(m=> m.player).lastOption
+  def find(board: Board, x: Int, y: Int): Option[Player] = board.find(m => m.x == x && m.y == y).map(m=> m.player)
 
 //  def placeAnyMark(board: Board, player: Player): Seq[Board] = {
 //    var solutions: Seq[Board] = Seq()
@@ -34,7 +34,15 @@ object TicTacToe  extends  App {
     yield board:+Mark(x,y,player)
   }
 
-  def computeAnyGame(player: Player, moves: Int): Stream[Game] = ???
+  def computeAnyGame(player: Player, moves: Int): Stream[Game] = moves match {
+    case 0 => Stream(List(Nil))
+    case _ =>  for {
+      // the container type is determined by the first generator type -> Stream
+      g <- computeAnyGame(player.other, moves - 1);
+      b <- placeAnyMark(g.head, player)
+      // because we said yield game to the Stream we return a Stream[Game]
+    } yield b::g
+  }
 
   def printBoards(game: Seq[Board]): Unit =
     for (y <- 0 to 2; board <- game.reverse; x <- 0 to 2) {
@@ -60,7 +68,7 @@ object TicTacToe  extends  App {
   //..X ... ... .X. ... ... X.. ...
 
   // Exercise 3 (ADVANCED!): implement computeAnyGame such that..
- // computeAnyGame(O, 4) foreach {g => printBoards(g); println()}
+  computeAnyGame(O, 4) foreach {g => printBoards(g); println()}
   //... X.. X.. X.. XO.
   //... ... O.. O.. O..
   //... ... ... X.. X..

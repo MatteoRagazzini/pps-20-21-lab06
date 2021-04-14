@@ -5,6 +5,14 @@ package u06lab.code
   * in TryFunctions works correctly.
  */
 
+trait Functions {
+//  def sum(a: List[Double]): Double
+//  def concat(a: Seq[String]): String
+//  def max(a: List[Int]): Int // gives Int.MinValue if a is empty
+  def combine[A:Combiner](a: Seq[A]): A
+}
+
+
 trait Combiner[A] {
   def unit: A
   def combine(a: A, b: A): A
@@ -43,22 +51,15 @@ object ImplicitsCombiners {
   }
 }
 
-trait Functions {
-  def sum(a: List[Double]): Double
-  def concat(a: Seq[String]): String
-  def max(a: List[Int]): Int // gives Int.MinValue if a is empty
-  def combine[A:Combiner](a: Seq[A]): A
-}
-
 object FunctionsImpl extends Functions {
   import ImplicitsCombiners._
-
-  override def sum(a: List[Double]): Double = combine(a)
-
-
-  override def concat(a: Seq[String]): String = combine(a)
-
-  override def max(a: List[Int]): Int = combine(a)
+//
+//  override def sum(a: List[Double]): Double = combine(a)
+//
+//
+//  override def concat(a: Seq[String]): String = combine(a)
+//
+//  override def max(a: List[Int]): Int = combine(a)
 
   def combine[A:Combiner](a: Seq[A]): A = a match {
     case Nil => implicitly[Combiner[A]].unit

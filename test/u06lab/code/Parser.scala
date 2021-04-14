@@ -1,7 +1,7 @@
 package u06lab.code
 
-import org.junit.jupiter.api.{Assertions, Test}
-import Assertions._
+import org.junit.Assert._
+import org.junit.Test
 import implicitConversions._
 
 class TryParsers {
